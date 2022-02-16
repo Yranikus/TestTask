@@ -1,0 +1,48 @@
+body{
+    margin:0;
+    padding:0;
+}
+.contentWrapper{
+    width: fit-content;
+    margin: 100px auto;
+    border: 1px solid orange;
+    padding: 40px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.countContainer{
+    width: 100px;
+    font-family: Calibri;
+    font-size:50px;
+    text-align: center;
+}
+
+.clickButton{
+    background-color: red;
+    width: 80px;
+    height: 80px;
+    border: 2px solid burlywood;
+    border-radius: 50%;
+    white-space: normal;
+    margin-top: 50px
+}
+
+.clickButton:hover{
+    border: 2px dashed red;
+    background-color: violet;
+    transition: all 0.5s
+}
+
+.deleteButton{
+    background-color: none;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    text-align: center;
+    border: 2px solid burlywood;
+    border-radius: 10%;
+    white-space: normal;
+    margin-top: 50px;
+}

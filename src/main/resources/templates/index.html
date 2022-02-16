@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clicker</title>
+    <link rel="stylesheet" href="css/index.css" type="text/css">
+    <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+    </style>       
+</head>
+<body>
+    <script>
+
+        //Функцция получения куков
+        function getCookie(name) {
+            let matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+                ));
+            return matches ? decodeURIComponent(matches[1]) : '-';
+        }
+
+        //Для того что бы , если кука только создалась у юзера счетчик был равен нулю на старнице , а не прочерку или NaN
+        if(getCookie("counter") === '-'){
+            document.cookie = "counter = 0;";
+        }
+
+        let counter = getCookie("counter");
+
+
+        document.addEventListener("DOMContentLoaded", ()=>{
+
+
+            let counterDiv = document.querySelector(".countContainer");
+            let addButton = document.querySelector(".clickButton");
+
+
+            if (counter === "0") {
+                $.ajax({
+                    url: "get_number_of_clicks",
+                    method: `GET`,
+                    cache: false,
+                    dataType: 'text',
+                    success: function (data) {
+                        counter = data;
+                        console.log("ты пидор")
+                        counterDiv.innerHTML = data;
+                        document.cookie = `counter = ${counter};`
+                    }
+                });
+            }
+
+            counterDiv.innerHTML = getCookie("counter");
+
+            //Обновляем счетчик с кликом по кнопке
+            addButton.addEventListener("click", ()=>{
+                counter++;
+                document.cookie = `counter = ${counter};`
+                console.log(document.cookie);
+                counterDiv.innerHTML = counter;
+            });
+
+            
+            //Это для кнопки удалить
+            let delBtn = document.querySelector(".deleteButton");
+
+            delBtn.addEventListener("click", ()=>{
+                counter = 0;
+                document.cookie = `counter = 0;`
+                console.log(document.cookie);
+                counterDiv.innerHTML = counter;
+                $.ajax({
+                    url: `reset`,
+                    method: 'DELETE'
+                })
+            });
+
+
+        });
+
+        //Обработчик момента , когда юзер покидает страницу что бы сохранить прогресс в бд.
+        window.onbeforeunload = function () {
+            $.ajax({
+                url: `update?counter=${counter}`,
+                method: 'put'
+            })
+            return "закрыть";
+        }
+
+
+    </script>
+    <div class="contentWrapper">
+        <div class="countContainer">
+            -
+        </div>
+        <button class="clickButton" type="button">
+            Tap </br>
+            me
+        </button>
+
+        <!-- Для отладки -->
+        <button class="deleteButton" type="button">
+            del
+        </button>
+
+
+        
+    </div>
+</body>
+</html>
