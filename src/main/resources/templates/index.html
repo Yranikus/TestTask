@@ -44,7 +44,6 @@
                     dataType: 'text',
                     success: function (data) {
                         counter = data;
-                        console.log("ты пидор")
                         counterDiv.innerHTML = data;
                         document.cookie = `counter = ${counter};`
                     }
